@@ -11,10 +11,6 @@
         public function getRaiz() {
             return $this->raiz;
         }
-
-        public function setRaiz($raiz): void {
-            $this->raiz = new Nodo($raiz);
-        }
         
         public function estaVacio() {
             return $this->raiz == null;
@@ -62,38 +58,11 @@
             return 0;
         }
         
-        public function agregarHijo($infoNodo, $lado, $infoPadre) {
-            if ($this->estaVacio()) {
-                return false;
+        public function agregarHijo($infoNodo) {
+            if ($this->raiz == null) {
+                $this->raiz = new Nodo($infoNodo);
             } else {
-                $nodo = new Nodo($infoNodo);
-                $padre = $this->buscar($this->raiz, $infoPadre);
-                
-                if ($padre != null) {
-                    if ($lado == "D") {
-                        if ($padre->getNodoDerecha() != null) {
-                            $nodo->setNodoDerecha($padre->getNodoDerecha());
-                            $padre->setNodoDerecha($nodo);
-                            return true;
-                        } else {
-                            $padre->setNodoDerecha($nodo);
-                            return true;
-                        }
-                    }
-                    
-                    if ($lado == "I") {
-                        if ($padre->getNodoIzquierda() != null) {
-                            $nodo->setNodoIzquierda($padre->getNodoIzquierda());
-                            $padre->setNodoIzquierda($nodo);
-                            return true;
-                        } else {
-                            $padre->setNodoIzquierda($nodo);
-                            return true;
-                        }
-                    } else {
-                        return false;
-                    }
-                }
+                $this->raiz->insertar($infoNodo);
             }
         }
         
@@ -118,28 +87,84 @@
         }
         
         public function eliminarNodo($infoNodo) {
-            $nodo = $this->buscar($this->raiz, $infoNodo);
+            $auxiliar = $this->getRaiz();
+            $padre = $this->getRaiz();
+            $hijoIzq = true;
             
-            if ($nodo != null) {
-                if (!($this->tieneHijos($nodo))) {
-                    if ($nodo == $this->raiz) {
-                        $this->raiz = null;
-                        return true;
-                    }
-                    
-                    $padre = $this->padreNodo($infoNodo, $this->raiz);
-                    
-                    if ($padre->getNodoIzquierda() == $nodo) {
-                        $padre->setNodoIzquierda(null);
-                    } elseif ($padre->getNodoDerecha() == $nodo) {
-                        $padre->setNodoDerecha(null);
-                    }
-                    
-                    return true;
+            while ($auxiliar->getInformacion() != $infoNodo) {
+                $padre = $auxiliar;
+
+                if ($infoNodo < $auxiliar->getInformacion()) {
+                    $hijoIzq = true;
+                    $auxiliar =$auxiliar->getNodoIzquierda();
+                } else {
+                    $hijoIzq = false;
+                    $auxiliar =$auxiliar->getNodoDerecha();
+                }
+                
+                if ($auxiliar == null) {
+                    return false;
                 }
             }
             
-            return false;
+            if ($auxiliar->getNodoIzquierda() == null && $auxiliar->getNodoDerecha() == null) {
+                if ($auxiliar == $this->getRaiz()) {
+                    $this->raiz = null;
+                } else if ($hijoIzq) {
+                    $padre->setNodoIzquierda(null);
+                } else {
+                    $padre->setNodoDerecha(null);
+                }
+            } else if ($auxiliar->getNodoDerecha() == null) {
+                if ($auxiliar == $this->getRaiz()) {
+                    $this->raiz = $auxiliar->getNodoIzquierda();
+                } else if ($hijoIzq) {
+                    $padre->setNodoIzquierda($auxiliar->getNodoDerecha());
+                } else {
+                    $padre->setNodoDerecha($auxiliar->getNodoIzquierda());
+                }
+            } else if ($auxiliar->getNodoIzquierda() == null) {
+                if ($auxiliar == $this->getRaiz()) {
+                    $this->raiz = $auxiliar->getNodoDerecha();
+                } else if ($hijoIzq) {
+                    $padre->setNodoIzquierda($auxiliar->getNodoDerecha());
+                } else {
+                    $padre->setNodoDerecha($auxiliar->getNodoIzquierda());
+                }
+            } else {
+                $reemplazo = $this->obtenerNodoReemplazo($auxiliar);
+                
+                if ($auxiliar == $this->raiz) {
+                    $this->raiz = $reemplazo;
+                } else if ($hijoIzq) {
+                    $padre->setNodoIzquierda($reemplazo);
+                } else {
+                    $padre->setNodoDerecha($reemplazo);
+                }
+                
+                $reemplazo->setNodoIzquierda($auxiliar->getNodoIzquierda());
+            }
+            
+            return true;
+        }
+        
+        public function obtenerNodoReemplazo($remp) {
+            $reempPadre = $remp;
+            $reemplazo = $remp;
+            $auxiliar = $remp->getNodoDerecha();
+            
+            while ($auxiliar != null) {
+                $reempPadre = $reemplazo;
+                $reemplazo = $auxiliar;
+                $auxiliar = $auxiliar->getNodoIzquierda();
+            }
+            
+            if ($reemplazo != $remp->getNodoDerecha()) {
+                $reempPadre->setNodoIzquierda($reemplazo->getNodoDerecha());
+                $reemplazo->setNodoDerecha($remp->getNodoDerecha());
+            }
+            
+            return $reemplazo;
         }
         
         public function contarPares ($infoNodo) {

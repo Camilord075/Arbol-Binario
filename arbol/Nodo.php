@@ -33,5 +33,21 @@
         public function setNodoIzquierda($nodoIzquierda): void {
             $this->nodoIzquierda = $nodoIzquierda;
         }
+
+        public function insertar ($valor) {
+            if ($valor < $this->informacion) {
+                if ($this->nodoIzquierda == null) {
+                    $this->nodoIzquierda = new Nodo($valor);
+                } else {
+                    $this->nodoIzquierda->insertar($valor);
+                }
+            } else {
+                if ($this->nodoDerecha == null) {
+                    $this->nodoDerecha = new Nodo($valor);
+                } else {
+                    $this->nodoDerecha->insertar($valor);
+                }
+            }
+        }
     }
 ?>

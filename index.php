@@ -32,32 +32,18 @@
                 break;
 
             case "Agregar":
-                $txtLado = (isset($_POST["lado"]))?$_POST["lado"]:"";
-                
                 if ($_POST["valor-hoja"] == "0") {
                     $txtHoja = (isset($_POST["valor-hoja"]))?$_POST["valor-hoja"]:"";
                 } else {
                     $txtHoja = (isset($_POST["valor-hoja"]))?intval($_POST["valor-hoja"]):"";
                 }
                 
-                if ($_POST["padre-hoja"] == "0") {
-                    $txtPadre = (isset($_POST["padre-hoja"]))?$_POST["padre-hoja"]:"";
-                } else {
-                    $txtPadre = (isset($_POST["padre-hoja"]))?intval($_POST["padre-hoja"]):"";
-                }
-                
-                if ($txtLado != "" && $txtHoja != "" && $txtPadre != "") {
-                    if ($_SESSION["arbol"]->agregarHijo($txtHoja, $txtLado, $txtPadre)) {
+                if ($txtHoja != "") {
+                    if ($_SESSION["arbol"]->agregarHijo($txtHoja)) {
                         $contenido = "swal({
                             title: 'Agregar Hoja',
                             text: 'Se ha agregado una hoja correctamente',
                             icon: 'success',
-                        })";
-                    } else {
-                        $contenido = "swal({
-                            title: 'Agregar Hoja',
-                            text: 'El padre no existe, no se pudo agregar la hoja',
-                            icon: 'error',
                         })";
                     }
                 }
@@ -126,7 +112,6 @@
     </div>
     <nav class="navbar navbar-expand navbar-dark bg-dark justify-content-center">
         <div class="nav navbar-nav">
-            <a class="nav-item nav-link" href="#crear">Crear Árbol</a>
             <a class="nav-item nav-link" href="#agregar">Agregar</a>
             <a class="nav-item nav-link" href="#eliminar">Eliminar</a>
             <a class="nav-item nav-link" href="#conteos">Conteos</a>
@@ -255,17 +240,17 @@
         <div class="row">
             <div class="col-md-4"></div>
             <div class="col-md-4">
-                <h1 id="crear" style="text-align: center">Crear Árbol</h1>
+                <h1 id="agregar" style="text-align: center">Agregar Nodo</h1>
                 <br>
                 <div class="card">
                     <div class="card-body">
                         <form action="index.php" method="post">
                             <div class="form-group">
-                                <label for="dato-raiz" >Raíz del Árbol *</label>
-                                <input type="number" class="form-control" name="dato-raiz" id="dato-raiz" placeholder="Ingrese la raíz del árbol" required <?php echo (!($_SESSION["arbol"]->estaVacio()))?"readonly":""; ?>>
+                                <label for="valor-hoja">Valor del nodo *</label>
+                                <input type="number" class="form-control" name="valor-hoja" id="valor-hoja" placeholder="Ingrese el valor" required>
                             </div>
                             <br>
-                            <button type="submit" id="crear-arbol" name="accion" <?php echo (!($_SESSION["arbol"]->estaVacio()))?'disabled':''; ?> value="Crear" class="btn btn-primary">Crear Árbol</button>
+                            <button type="submit" id="agregar-hoja" name="accion" value="Agregar" class="btn btn-primary">Agregar Nodo</button>
                         </form>
                     </div>
                 </div>
@@ -278,54 +263,17 @@
         <div class="row">
             <div class="col-md-4"></div>
             <div class="col-md-4">
-                <h1 id="agregar" style="text-align: center">Agregar Hoja</h1>
+                <h1 id="eliminar" style="text-align: center">Eliminar Nodo</h1>
                 <br>
                 <div class="card">
                     <div class="card-body">
                         <form action="index.php" method="post">
                             <div class="form-group">
-                                <label for="valor-hoja">Valor de la hoja *</label>
-                                <input type="number" class="form-control" name="valor-hoja" id="valor-hoja" placeholder="Ingrese la hoja" required <?php echo ($_SESSION["arbol"]->estaVacio())?"readonly":""; ?>>
+                                <label for="valor-hoja">Valor del Nodo *</label>
+                                <input type="number" class="form-control" name="valor-hoja-eliminar" id="valor-hoja-eliminar" placeholder="Ingrese el valor" required <?php echo ($_SESSION["arbol"]->estaVacio())?"readonly":""; ?>>
                             </div>
                             <br>
-                            <div class="form-group">
-                                <label for="valor-hoja">Padre de la hoja *</label>
-                                <input type="number" class="form-control" name="padre-hoja" id="padre-hoja" placeholder="Ingrese el padre" required <?php echo ($_SESSION["arbol"]->estaVacio())?"readonly":""; ?>>
-                            </div>
-                            <br>
-                            <div class="form-group">
-                            <label>Lado con respecto al padre *</label> <br />
-                                <input type="radio" id="derecha" name="lado" value="D" title="Derecha" <?php echo ($_SESSION["arbol"]->estaVacio())?"disabled":""; ?>/>
-                                <label for="derecha">Derecha</label>
-                                <br />
-                                <input type="radio" id="izquierda" name="lado" value="I" title="Izquierda" <?php echo ($_SESSION["arbol"]->estaVacio())?"disabled":""; ?>/>
-                                <label for="izquierda">Izquierda</label>
-                            </div>
-                            <br>
-                            <button type="submit" id="agregar-hoja" name="accion" value="Agregar" <?php echo ($_SESSION["arbol"]->estaVacio())?'disabled':''; ?> class="btn btn-primary">Agregar Hoja</button>
-                        </form>
-                    </div>
-                </div>
-                <br>
-            </div>
-        </div>
-    </div>
-    <br>
-    <div class="container bg-light" style="border-radius: 7px">
-        <div class="row">
-            <div class="col-md-4"></div>
-            <div class="col-md-4">
-                <h1 id="eliminar" style="text-align: center">Eliminar Hoja</h1>
-                <br>
-                <div class="card">
-                    <div class="card-body">
-                        <form action="index.php" method="post">
-                            <div class="form-group">
-                                <label for="valor-hoja">Hoja a borrar *</label>
-                                <input type="number" class="form-control" name="valor-hoja-eliminar" id="valor-hoja-eliminar" placeholder="Ingrese la hoja" required <?php echo ($_SESSION["arbol"]->estaVacio())?"readonly":""; ?>>
-                            </div>
-                            <br>
-                            <button type="submit" id="eliminar-hoja" name="accion" value="Eliminar" <?php echo ($_SESSION["arbol"]->estaVacio())?'disabled':''; ?> class="btn btn-primary">Eliminar Hoja</button>
+                            <button type="submit" id="eliminar-hoja" name="accion" value="Eliminar" <?php echo ($_SESSION["arbol"]->estaVacio())?'disabled':''; ?> class="btn btn-primary">Eliminar Nodo</button>
                         </form>
                     </div>
                 </div>
