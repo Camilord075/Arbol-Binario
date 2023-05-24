@@ -14,23 +14,6 @@
     
     if ($_POST) {
         switch ($txtAccion) {
-            case "Crear":
-                if ($_SESSION["arbol"]->estaVacio()) {
-                    if (isset($_POST["dato-raiz"])){
-                        if ($_POST["dato-raiz"] == "0") {    
-                            $_SESSION["arbol"]->setRaiz($_POST["dato-raiz"]);
-                        } else {
-                            $_SESSION["arbol"]->setRaiz(intval($_POST["dato-raiz"]));
-                        }
-                        $contenido = "swal({
-                            title: 'Crear Árbol',
-                            text: 'Se ha creado el árbol correctamente',
-                            icon: 'success',
-                        })";
-                    }
-                }
-                break;
-
             case "Agregar":
                 if ($_POST["valor-hoja"] == "0") {
                     $txtHoja = (isset($_POST["valor-hoja"]))?$_POST["valor-hoja"]:"";

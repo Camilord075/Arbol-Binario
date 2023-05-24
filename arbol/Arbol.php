@@ -64,6 +64,8 @@
             } else {
                 $this->raiz->insertar($infoNodo);
             }
+
+            return true;
         }
         
         public function padreNodo($infoNodo, $raiz) {
