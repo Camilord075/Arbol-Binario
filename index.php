@@ -104,7 +104,7 @@
         <div class="row" style="text-align: center">
             <div class="col-md-12" style="background-image: url('./imagenes/arboles-a-contra-luz-del-sol_1920x1080_xtrafondos.com.jpg'); background-repeat: no-repeat; background-attachment: fixed; border-radius: 7px">
                 <br><br>
-                <h1 class="h1" style="color: white; background-color: rgba(0,0,0,0.5); border-radius: 7px">Proyecto Árbol<br><p>Por Camilo Arteta y Jean Paul Morales</p></h1>
+                <h1 class="h1" style="color: white; background-color: rgba(0,0,0,0.5); border-radius: 7px">Proyecto Árbol de Búsqueda Binaria</h1>
                 <br><br>
             </div>
         </div>
