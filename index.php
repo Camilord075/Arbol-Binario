@@ -84,7 +84,7 @@
 <body class="bg-primary">
     <div class="container bg-primary">
         <br>
-        <div class="row" style="text-align: center">
+        <div class="row mt-5" style="text-align: center">
             <div class="col-md-12" style="background-image: url('./imagenes/arboles-a-contra-luz-del-sol_1920x1080_xtrafondos.com.jpg'); background-repeat: no-repeat; background-attachment: fixed; border-radius: 7px">
                 <br><br>
                 <h1 class="h1" style="color: white; background-color: rgba(0,0,0,0.5); border-radius: 7px">Proyecto Árbol de Búsqueda Binaria</h1>
@@ -93,7 +93,7 @@
         </div>
         <br>
     </div>
-    <nav class="navbar navbar-expand navbar-dark bg-dark justify-content-center">
+    <nav class="navbar navbar-expand navbar-dark bg-dark justify-content-center fixed-top">
         <div class="nav navbar-nav">
             <a class="nav-item nav-link" href="#agregar">Agregar</a>
             <a class="nav-item nav-link" href="#eliminar">Eliminar</a>
